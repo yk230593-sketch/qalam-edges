@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qalam Edges — Next-Gen AI Creator Studio</title>
+    <meta name="description" content="Synthesize generative media, application engineering, and interactive orchestration into a unified premium workspace. Create images, video, music, and apps seamlessly.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Reset & Variable Definitions */
+        :root {
+            --bg-base: #050816;
+            --bg-surface: rgba(255, 255, 255, 0.03);
+            --border-glow: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-blue: #00f0ff;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #d946ef;
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Ambient Background Glows */
+        .ambient-glows {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .glow-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.2;
+            mix-blend-mode: screen;
+        }
+
+        .glow-1 {
+            top: -10%;
+            left: 20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-blue) 0%, transparent 80%);
+            animation: pulseGlow 15s infinite alternate;
+        }
+
+        .glow-2 {
+            top: 15%;
+            right: 15%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-purple) 0%, transparent 80%);
+            animation: pulseGlow 12s infinite alternate-reverse;
+        }
+
+        .glow-3 {
+            bottom: 30%;
+            left: 10%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, var(--accent-pink) 0%, transparent 80%);
+            opacity: 0.15;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(40px) scale(1.15); }
+        }
+
+        /* Glassmorphism Common Styles */
+        .glass-card {
+            background: var(--bg-surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glow);
+            border-radius: 24px;
+            transition: var(--transition-smooth);
+        }
+
+        .glass-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Selection Color */
+        ::selection {
+            background: rgba(139, 92, 246, 0.3);
+            color: var(--text-primary);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-base);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Global Typography & Elements */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        p {
+            color: var(--text-secondary);
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            backdrop-filter: blur(8px);
+        }
+
+        .badge i {
+            color: var(--accent-blue);
+        }
+
+        /* Buttons & Interaction */
+        .btn-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: #000;
+            font-weight: 600;
+            border: none;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+            opacity: 0.95;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Section Layouts */
+        section {
+            padding: 120px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header {
+            max-width: 680px;
+            margin-bottom: 64px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+        }
+
+        /* Navigation Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            background: rgba(5, 8, 22, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: var(--transition-smooth);
+        }
+
+        header.scrolled {
+            background: rgba(5, 8, 22, 0.9);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+        }
+
+        .logo-symbol {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            position: relative;
+        }
+
+        .logo-symbol::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: var(--bg-base);
+            border-radius: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-actions .btn-login {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-actions .btn-login:hover {
+            color: var(--text-primary);
+        }
+
+        /* Mobile Hamburger */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        .menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background-color: var(--text-primary);
+            transition: var(--transition-smooth);
+        }
+
+        /* Hero Section */
+        #hero {
+            padding-top: 180px;
+            padding-bottom: 120px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 5vw, 4.2rem);
+            line-height: 1.05;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 70%, #64748b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 580px;
+            font-weight: 300;
+        }
+
+        /* Hero Interactive Mockup styling */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mockup-container {
+            width: 100%;
+            max-width: 520px;
+            aspect-ratio: 1 / 1;
+            position: relative;
+        }
+
+        .dashboard-mock {
+            width: 100%;
+            height: 100%;
+            border-radius: 24px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .mock-header {
+            height: 48px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+        }
+
+        .mock-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .mock-dot.active {
+            background-color: var(--accent-blue);
+        }
+
+        .mock-body {
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .mock-prompt {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-family: var(--font-body);
+            position: relative;
+        }
+
+        .mock-prompt .cursor-blink {
+            display: inline-block;
+            width: 6px;
+            height: 14px;
+            background-color: var(--accent-blue);
+            margin-left: 4px;
+            vertical-align: middle;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .mock-preview {
+            flex: 1;
+            margin: 20px 0;
+            border-radius: 12px;
+            background: radial-gradient(circle at center, rgba(139, 92, 246, 0.2), transparent 70%);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mock-preview::after {
+            content: '';
+            position: absolute;
+            width: 140%;
+            height: 10px;
+            background: linear-gradient(to right, transparent, rgba(0, 240, 255, 0.4), transparent);
+            top: 0;
+            animation: scanLine 4s ease-in-out infinite;
+        }
+
+        @keyframes scanLine {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+
+        /* Floating Glass Cards */
+        .floating-card {
+            position: absolute;
+            padding: 14px 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .fc-1 {
+            top: 15%;
+            left: -40px;
+            background: rgba(5, 8, 22, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            animation-delay: 0s;
+        }
+
+        .fc-2 {
+            bottom: 20%;
+            right: -30px;
+            background: rgba(5, 8, 22, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        /* Trusted Companies Section */
+        #trusted {
+            padding: 60px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            background: rgba(5, 8, 22, 0.4);
+        }
+
+        #trusted p {
+            text-align: center;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .company-grid {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .company-logo {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.5;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
+
+        .company-logo:hover {
+            opacity: 1;
+            color: var(--text-primary);
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: var(--transition-smooth);
+        }
+
+        .feature-icon-wrapper i {
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .feature-card:hover .feature-icon-wrapper {
+            transform: scale(1.1);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(0, 240, 255, 0.03), transparent 50%);
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Products Section */
+        .products-showcase {
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+        }
+
+        .product-large-card {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 48px;
+            align-items: center;
+            padding: 48px;
+        }
+
+        .product-large-card.reverse {
+            grid-template-columns: 1.1fr 1fr;
+        }
+
+        .product-meta-content {
+            z-index: 2;
+        }
+
+        .product-meta-content h3 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .product-meta-content p {
+            font-size: 1.05rem;
+            margin-bottom: 32px;
+        }
+
+        .product-features-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .product-features-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .product-features-list li i {
+            color: var(--accent-blue);
+            font-size: 0.85rem;
+        }
+
+        .product-visual-wrapper {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            background: #000;
+            aspect-ratio: 16 / 10;
+        }
+
+        .product-visual-wrapper img, .product-visual-wrapper .mock-interactive {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Why Choose Qalam Edges & Statistics */
+        .advantages-wrapper {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 64px;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .advantage-item {
+            padding: 24px;
+        }
+
+        .advantage-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .advantage-item h4 i {
+            color: var(--accent-blue);
+        }
+
+        .advantage-item p {
+            font-size: 0.85rem;
+        }
+
+        /* Stats Sub-layout */
+        .stats-sidebar {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 32px;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.00) 100%);
+        }
+
+        .stat-block {
+            border-left: 2px solid var(--accent-purple);
+            padding-left: 24px;
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #ffffff 50%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* About Section Layout */
+        .about-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .about-content h3 {
+            font-size: 2.25rem;
+            margin-bottom: 20px;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            margin-bottom: 24px;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .about-feat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .about-feat-item h5 {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .about-feat-item p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        /* Testimonials Section */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .testimonial-card {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .testimonial-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 32px;
+            color: var(--text-primary);
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #000;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .author-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .author-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Pricing Section */
+        .pricing-toggle-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .toggle-label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .toggle-label.active {
+            color: var(--text-primary);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-purple);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            align-items: stretch;
+        }
+
+        .pricing-card {
+            padding: 48px 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .pricing-card.premium-highlight {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
+        }
+
+        .pricing-card.premium-highlight::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 100px;
+            letter-spacing: 0.05em;
+        }
+
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .pricing-desc {
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .pricing-price {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .pricing-price span {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .pricing-features li i {
+            font-size: 0.9rem;
+        }
+
+        .pricing-features li i.fa-circle-check {
+            color: var(--accent-blue);
+        }
+
+        .pricing-features li i.fa-circle-xmark {
+            color: var(--text-muted);
+        }
+
+        /* Accordion (FAQ) */
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item {
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.01);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .faq-trigger {
+            width: 100%;
+            padding: 24px;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            text-align: left;
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .faq-trigger i {
+            transition: var(--transition-smooth);
+            color: var(--text-secondary);
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+        }
+
+        .faq-content-inner {
+            padding: 0 24px 24px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .faq-item.active {
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .faq-item.active .faq-trigger i {
+            transform: rotate(180deg);
+            color: var(--accent-blue);
+        }
+
+        .faq-item.active .faq-content {
+            max-height: 1000px;
+            transition: max-height 1s cubic-bezier(1, 0, 1, 0);
+        }
+
+        /* Newsletter Subscription */
+        .newsletter-wrapper {
+            padding: 64px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter-content {
+            max-width: 580px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .newsletter-content h3 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .newsletter-content p {
+            margin-bottom: 32px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 6px;
+            border-radius: 14px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 12px 18px;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .newsletter-form input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Footer styling */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            background-color: #03050d;
+            padding: 80px 0 40px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 64px;
+        }
+
+        .footer-info-col p {
+            font-size: 0.9rem;
+            margin-top: 16px;
+            margin-bottom: 24px;
+            max-width: 240px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+        }
+
+        .footer-col h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-col ul a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-col ul a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-bottom-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-bottom-links a:hover {
+            color: var(--text-secondary);
+        }
+
+        /* Tablet Responsive Rules */
+        @media (max-width: 1024px) {
+            .hero-layout {
+                grid-template-columns: 1fr;
+                gap: 48px;
+                text-align: center;
+            }
+
+            .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .btn-group {
+                justify-content: center;
+            }
+
+            .mockup-container {
+                margin: 0 auto;
+            }
+
+            .product-large-card, .product-large-card.reverse {
+                grid-template-columns: 1fr;
+                gap: 32px;
+                padding: 32px;
+            }
+
+            .advantages-wrapper {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .about-layout {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Mobile Responsive Rules */
+        @media (max-width: 768px) {
+            .nav-links, .nav-actions {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            /* Mobile Nav Active */
+            .nav-container.active .nav-links {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: #050816;
+                padding: 40px 24px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                gap: 24px;
+                animation: slideDownMenu 0.4s ease forwards;
+            }
+
+            @keyframes slideDownMenu {
+                from { transform: translateY(-20px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .newsletter-wrapper {
+                padding: 40px 20px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+                background: none;
+                border: none;
+                padding: 0;
+            }
+
+            .newsletter-form input {
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 12px;
+                margin-bottom: 12px;
+                padding: 14px 18px;
+            }
+
+            .newsletter-form .btn {
+                width: 100%;
+            }
+
+            .floating-card {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient background glows -->
+    <div class="ambient-glows">
+        <div class="glow-blob glow-1"></div>
+        <div class="glow-blob glow-2"></div>
+        <div class="glow-blob glow-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <header id="site-header">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-symbol"></div>
+                Qalam Edges
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#why-choose">Why Us</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="#" class="btn-login">Login</a>
+                <a href="#pricing" class="btn btn-secondary" style="padding: 10px 20px; font-size: 0.85rem;">Get Started</a>
+            </div>
+
+            <button class="menu-toggle" aria-label="Toggle Menu" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <div class="hero-layout">
+                <div class="hero-content">
+                    <div class="badge">
+                        <i class="fa-solid fa-sparkles"></i> The Future of Creative Synthesis
+                    </div>
+                    <h1>The Future of AI Creation Begins Here</h1>
+                    <p>Assemble media compositions, engineering pipelines, and interactive layouts on an unconstrained, production-ready canvas designed for modern creators.</p>
+                    <div class="btn-group">
+                        <a href="#pricing" class="btn btn-primary">
+                            <span>Get Started Free</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="#features" class="btn btn-secondary">Explore Features</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="mockup-container">
+                        <div class="dashboard-mock">
+                            <div class="mock-header">
+                                <span class="mock-dot active"></span>
+                                <span class="mock-dot"></span>
+                                <span class="mock-dot"></span>
+                            </div>
+                            <div class="mock-body">
+                                <div class="mock-prompt">
+                                    <span>/imagine cinematic orchestral synth composition, high tension, neon skyline visual background</span>
+                                    <span class="cursor-blink"></span>
+                                </div>
+                                <div class="mock-preview">
+                                    <div class="mock-interactive">
+                                        <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 2.5rem; color: rgba(255,255,255,0.15); animation: pulse 2s infinite;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="floating-card fc-1 glass-card">
+                            <i class="fa-solid fa-wave-square" style="color: var(--accent-blue);"></i>
+                            <span>Audio Generation Complete</span>
+                        </div>
+                        <div class="floating-card fc-2 glass-card">
+                            <i class="fa-solid fa-cube" style="color: var(--accent-purple);"></i>
+                            <span>Vector Asset Extracted</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trusted Companies -->
+    <section id="trusted">
+        <div class="container">
+            <p>Empowering teams at modern standard-setters</p>
+            <div class="company-grid">
+                <a href="#" class="company-logo"><i class="fa-brands fa-figma"></i> FIGMA</a>
+                <a href="#" class="company-logo"><i class="fa-solid fa-cloud"></i> VERCEL</a>
+                <a href="#" class="company-logo"><i class="fa-brands fa-stripe"></i> STRIPE</a>
+                <a href="#" class="company-logo"><i class="fa-solid fa-cube"></i> LINEAR</a>
+                <a href="#" class="company-logo"><i class="fa-solid fa-circle"></i> NOTION</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="badge">A Unified Pipeline</div>
+                <h2>A comprehensive creative suite, designed for speed</h2>
+                <p>Move beyond disjointed subscriptions. Access foundational multi-modal tools configured to operate seamlessly in one space.</p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- 1. AI Image Generator -->
+                <div class="feature-card glass-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fa-solid fa-image"></i>
+                    </div>
+                    <h3>AI Image Generator</h3>
+                    <p>Produce production-grade visual assets with strict architectural and photographic controls.</p>
+                </div>
+
+                <!-- 2. AI Video Generator -->
+                <div class="feature-card glass-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fa-solid fa-clapperboard"></i>
+                    </div>
+                    <h3>AI Video Generator</h3>
+                    <p>Direct cinematic content and structural motion layers from detailed text prompts.</p>
+                </div>
+
+                <!-- 3. AI Music Generator -->
+                <div class="feature-card glass-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fa-solid fa-music"></i>
+                    </div>
+                    <h3>AI Music Generator</h3>
+                    <p>Generate multitrack audio sequences, arrangements, and ambient frameworks instantly.</p>
+                </div>
+
+                <!-- 4. AI Voice Generator -->
+                <div class="feature-card glass-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fa-solid fa-microphone"></i>
+                    </div>
+                    <h3>AI Voice Generator</h3>
+                    <p>Synthesize expressive, natural vocal narration with fine-tuned pitch and dynamic options.</p>
+                </div>
+
+                <!-- 5. AI Website Builder -->
+                <div class="feature-card glass-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <h3>AI Website Builder</h3>
+                    <p>Generate structural frontend architectures directly in responsive visual frameworks.</p>
+                </div>
+
+                <!-- 6. AI App Builder -->
+                <div class="feature-card glass-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+                    <h3>AI App Builder</h3>
+                    <p>Transform functional parameters directly into multi-page reactive code bases.</p>
+                </div>
+
+                <!-- 7. AI Game Builder -->
+                <div class="feature-card glass-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </div>
+                    <h3>AI Game Builder</h3>
+                    <p>Define computational logics, parameters, and design layers for interactive experiences.</p>
+                </div>
+
+                <!-- 8. AI Logo Generator -->
+                <div class="feature-card glass-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fa-solid fa-compass-drafting"></i>
+                    </div>
+                    <h3>AI Logo Generator</h3>
+                    <p>Formulate scalable identity systems, brand vectors, and structural emblems quickly.</p>
+                </div>
+
+                <!-- 9. AI Thumbnail Generator -->
+                <div class="feature-card glass-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fa-solid fa-photo-film"></i>
+                    </div>
+                    <h3>AI Thumbnail Generator</h3>
+                    <p>Optimize visual dynamic balance to generate optimized compositions.</p>
+                </div>
+
+                <!-- 10. AI Social Media Creator -->
+                <div class="feature-card glass-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </div>
+                    <h3>AI Social Media</h3>
+                    <p>Plan visual assets and corresponding textual copy suited across multi-channel standards.</p>
+                </div>
+
+                <!-- 11. AI Chat Assistant -->
+                <div class="feature-card glass-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <h3>AI Chat Assistant</h3>
+                    <p>Interface with structural reasoning layers designed to process multi-format variables.</p>
+                </div>
+
+                <!-- 12. AI Code Generator -->
+                <div class="feature-card glass-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3>AI Code Generator</h3>
+                    <p>Construct clear structural logic, backend assets, and interface syntax on demand.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products">
+        <div class="container">
+            <div class="section-header">
+                <div class="badge">Products Suite</div>
+                <h2>Refining computational control</h2>
+                <p>Deploy custom multi-modal operations across dedicated functional engines.</p>
+            </div>
+
+            <div class="products-showcase">
+                <!-- Product 1 -->
+                <div class="product-large-card glass-card">
+                    <div class="product-meta-content">
+                        <div class="badge" style="color: var(--accent-blue); border-color: rgba(0, 240, 255, 0.2);">Media Generation</div>
+                        <h3>Qalam Engine Studio</h3>
+                        <p>Construct fine-tuned cinematic compositions, vector sets, and soundtracks using deep parameter adjustment tools.</p>
+                        <ul class="product-features-list">
+                            <li><i class="fa-solid fa-circle-notch"></i> Adaptive lighting simulation parameters</li>
+                            <li><i class="fa-solid fa-circle-notch"></i> Synchronous structural audio track exports</li>
+                            <li><i class="fa-solid fa-circle-notch"></i> Frame-accurate resolution upscaling</li>
+                        </ul>
+                        <a href="#pricing" class="btn btn-secondary">Explore Engine Studio</a>
+                    </div>
+                    <div class="product-visual-wrapper">
+                        <div style="background: radial-gradient(circle at center, #1e1b4b, #03001e); width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+                            <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 3.5rem; color: var(--accent-blue);"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-large-card glass-card reverse">
+                    <div class="product-visual-wrapper">
+                        <div style="background: radial-gradient(circle at center, #022c22, #050816); width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+                            <i class="fa-solid fa-terminal" style="font-size: 3.5rem; color: var(--accent-purple);"></i>
+                        </div>
+                    </div>
+                    <div class="product-meta-content">
+                        <div class="badge" style="color: var(--accent-purple); border-color: rgba(139, 92, 246, 0.2);">Application Engineering</div>
+                        <h3>Qalam Code Lab</h3>
+                        <p>Generate, refine, and deploy full structural application repositories directly with code reasoning blocks.</p>
+                        <ul class="product-features-list">
+                            <li><i class="fa-solid fa-circle-notch"></i> Automatic dynamic architecture generation</li>
+                            <li><i class="fa-solid fa-circle-notch"></i> Modular package compilation options</li>
+                            <li><i class="fa-solid fa-circle-notch"></i> Directly integration into cloud architectures</li>
+                        </ul>
+                        <a href="#pricing" class="btn btn-secondary">Explore Code Lab</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Qalam Edges & Statistics -->
+    <section id="why-choose">
+        <div class="container">
+            <div class="section-header">
+                <div class="badge">Why Qalam Edges</div>
+                <h2>Structured for professional reliability</h2>
+                <p>Designed to transition abstract thoughts into tangible deliverables with enterprise-grade stability.</p>
+            </div>
+
+            <div class="advantages-wrapper">
+                <div class="advantages-grid">
+                    <div class="advantage-item">
+                        <h4><i class="fa-solid fa-bolt"></i> Fast Computation</h4>
+                        <p>Operate directly on high-speed computing setups optimized to keep latency low.</p>
+                    </div>
+                    <div class="advantage-item">
+                        <h4><i class="fa-solid fa-shield-halved"></i> Secure Core</h4>
+                        <p>Process secure transactions with advanced security architectures designed to safeguard user files.</p>
+                    </div>
+                    <div class="advantage-item">
+                        <h4><i class="fa-solid fa-infinity"></i> Infinite Scope</h4>
+                        <p>Generate multiform assets with wide support boundaries for various media styles.</p>
+                    </div>
+                    <div class="advantage-item">
+                        <h4><i class="fa-solid fa-cloud"></i> Cloud Deployment</h4>
+                        <p>Render elements directly on cloud frameworks with instant backup protocols.</p>
+                    </div>
+                </div>
+
+                <div class="stats-sidebar glass-card">
+                    <div class="stat-block">
+                        <div class="stat-number" data-target="2.4M">2.4M+</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-number" data-target="150M">150M+</div>
+                        <div class="stat-label">Files Generated</div>
+                    </div>
+                    <div class="stat-block">
+                        <div class="stat-number" data-target="180">180+</div>
+                        <div class="stat-label">Supported Countries</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="about-layout">
+                <div class="about-content">
+                    <div class="badge">Our Mission</div>
+                    <h3>A creative layer over advanced neural pathways</h3>
+                    <p>We are a dedicated group of designers, software engineers, and researchers building computational workflows that serve to elevate human productivity and creative exploration.</p>
+                    <p>We work to lower functional hurdles, allowing creators to spend less time on repetitive manual configuration and focus more on design expression.</p>
+                    <div class="about-features">
+                        <div class="about-feat-item">
+                            <h5>High Precision</h5>
+                            <p>Control structural details with precision using precise node and direction vectors.</p>
+                        </div>
+                        <div class="about-feat-item">
+                            <h5>Collaborative Canvas</h5>
+                            <p>Coordinate structural elements synchronously alongside team members.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-visual">
+                    <div style="width: 100%; aspect-ratio: 1/1; border-radius: 24px; background: radial-gradient(circle at center, rgba(139, 92, 246, 0.1), transparent 70%); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; position: relative;">
+                        <i class="fa-solid fa-circle-nodes" style="font-size: 8rem; color: rgba(255,255,255,0.03); transform: rotate(15deg);"></i>
+                        <div class="glass-card" style="position: absolute; padding: 24px; max-width: 280px; text-align: center;">
+                            <h4 style="font-size: 1.1rem; margin-bottom: 8px;">Active Neural Clusters</h4>
+                            <p style="font-size: 0.8rem; margin: 0;">Coordinating multi-modal pipelines on demand across localized hubs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <div class="badge">Testimonials</div>
+                <h2>Trusted by modern builders</h2>
+                <p>Hear from product developers, digital designers, and creators utilizing our platform for production-grade deliverables.</p>
+            </div>
+
+            <div class="testimonial-grid">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card glass-card">
+                    <div class="testimonial-text">
+                        "The multi-modal orchestration inside Qalam Edges transformed how we assemble user prototypes. It brings asset construction and interactive flow-testing together seamlessly."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MS</div>
+                        <div class="author-info">
+                            <h4>Marcus Sterling</h4>
+                            <p>Product Lead, Design Systems</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card glass-card">
+                    <div class="testimonial-text">
+                        "Generating vector elements alongside clean code formats directly accelerated our creative cycles. The layout remains clean, minimal, and highly reliable."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">EL</div>
+                        <div class="author-info">
+                            <h4>Elena Rostova</h4>
+                            <p>Lead Creative Director</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card glass-card">
+                    <div class="testimonial-text">
+                        "The computational speeds and interface layout feel professional and straightforward. We generate consistent marketing and assets smoothly inside our secure workspaces."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">DK</div>
+                        <div class="author-info">
+                            <h4>Devon King</h4>
+                            <p>Founder, Future Media Agency</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing">
+        <div class="container">
+            <div class="section-header" style="text-align: center; margin: 0 auto 64px;">
+                <div class="badge">Simple Plans</div>
+                <h2>Sized to match your creative scale</h2>
+                <p>Choose an appropriate structure to power your multi-modal projects, with plans structured to support various output volumes.</p>
+            </div>
+
+            <div class="pricing-toggle-wrapper">
+                <span class="toggle-label active" id="monthly-label">Monthly</span>
+                <label class="switch">
+                    <input type="checkbox" id="pricing-toggle" onchange="togglePricing()">
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-label" id="yearly-label">Yearly <span style="color: var(--accent-blue); font-size: 0.8rem; font-weight: 600;">(Save 20%)</span></span>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Free Plan -->
+                <div class="pricing-card glass-card">
+                    <div class="pricing-header">
+                        <h3>Starter</h3>
+                        <p class="pricing-desc">Explore foundational creative parameters with essential features.</p>
+                        <div class="pricing-price" id="price-starter">
+                            $0 <span>/ mo</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fa-solid fa-circle-check"></i> 100 image credits / month</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Standard resolution output</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Core layout tools</li>
+                        <li><i class="fa-solid fa-circle-xmark"></i> High-definition rendering</li>
+                        <li><i class="fa-solid fa-circle-xmark"></i> Enterprise code deployments</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary">Get Started</a>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="pricing-card glass-card premium-highlight">
+                    <div class="pricing-header">
+                        <h3>Creator Pro</h3>
+                        <p class="pricing-desc">Complete multi-modal generation tools for active designers and engineers.</p>
+                        <div class="pricing-price" id="price-pro">
+                            $39 <span>/ mo</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fa-solid fa-circle-check"></i> Unlimited image & voice outputs</li>
+                        <li><i class="fa-solid fa-circle-check"></i> HD cinematic outputs (up to 4K)</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Comprehensive app building engine</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Priority queue processing</li>
+                        <li><i class="fa-solid fa-circle-xmark"></i> Enterprise SSO & administration</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary" style="width: 100%;">Get Started with Pro</a>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="pricing-card glass-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <p class="pricing-desc">Custom computational boundaries and security structures for large teams.</p>
+                        <div class="pricing-price" id="price-enterprise">
+                            Custom
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fa-solid fa-circle-check"></i> Custom dedicated model fine-tuning</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Unlimited team seats</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Isolated workspace server option</li>
+                        <li><i class="fa-solid fa-circle-check"></i> 24/7 technical priority channels</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Custom regulatory setups</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq">
+        <div class="container">
+            <div class="section-header" style="text-align: center; margin: 0 auto 64px;">
+                <div class="badge">FAQ</div>
+                <h2>Common Questions</h2>
+                <p>Clear, direct information about how our generation workflows and subscription models operate.</p>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-trigger" onclick="toggleFaq(this)">
+                        <span>How does Qalam Edges handle data privacy and security?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            Your inputs and generated files are stored securely inside isolated cloud structures. Enterprise plan holders have access to isolated database workspaces to comply with strict internal regulations.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-trigger" onclick="toggleFaq(this)">
+                        <span>Can I export generated application architectures as local files?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            Yes. The platform is designed with export support for structural systems. Frontend setups can be obtained as clean React/HTML/CSS templates, and backend logic files can be compiled directly into standard Node or Python structures.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-trigger" onclick="toggleFaq(this)">
+                        <span>What models power the generative assets inside Qalam Edges?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            Qalam Edges utilizes optimized proprietary models alongside custom parameters that allow us to balance composition layout control, structural coding speed, and image clarity dynamically.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-trigger" onclick="toggleFaq(this)">
+                        <span>Is there a local API available for engineering pipelines?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-content">
+                        <div class="faq-content-inner">
+                            Yes. Pro and Enterprise accounts have access to programmatic key controls, enabling them to connect our generation tools directly into internal development pipelines.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section id="newsletter">
+        <div class="container">
+            <div class="newsletter-wrapper glass-card">
+                <div class="newsletter-content">
+                    <h3>Keep informed on engine updates</h3>
+                    <p>Subscribe to our periodic logs summarizing engine optimization updates, model adjustments, and early developer test programs.</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed!');">
+                        <input type="email" placeholder="Enter your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info-col">
+                    <a href="#" class="logo">
+                        <div class="logo-symbol"></div>
+                        Qalam Edges
+                    </a>
+                    <p>Empowering teams with clean, multi-modal generation interfaces built to scale.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-discord"></i></a>
+                        <a href="#" class="social-link"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Products</h4>
+                    <ul>
+                        <li><a href="#">Studio Engine</a></li>
+                        <li><a href="#">Code Lab</a></li>
+                        <li><a href="#">Vocal Synthesizer</a></li>
+                        <li><a href="#">Developer API</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Brand Assets</a></li>
+                        <li><a href="#">Security Core</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Community Forum</a></li>
+                        <li><a href="#">System Status</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Licensing Details</a></li>
+                        <li><a href="#">GDPR Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>&copy; 2026 Qalam Edges Inc. All rights reserved.</div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Actions -->
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('site-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const container = document.querySelector('.nav-container');
+            container.classList.toggle('active');
+        }
+
+        // Close mobile menu on nav link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-container').classList.remove('active');
+            });
+        });
+
+        // Dynamic Pricing Toggle
+        function togglePricing() {
+            const toggle = document.getElementById('pricing-toggle');
+            const starterPrice = document.getElementById('price-starter');
+            const proPrice = document.getElementById('price-pro');
+            const monthlyLabel = document.getElementById('monthly-label');
+            const yearlyLabel = document.getElementById('yearly-label');
+
+            if (toggle.checked) {
+                // Yearly Pricing
+                proPrice.innerHTML = '$31 <span>/ mo</span>';
+                starterPrice.innerHTML = '$0 <span>/ mo</span>';
+                yearlyLabel.classList.add('active');
+                monthlyLabel.classList.remove('active');
+            } else {
+                // Monthly Pricing
+                proPrice.innerHTML = '$39 <span>/ mo</span>';
+                starterPrice.innerHTML = '$0 <span>/ mo</span>';
+                monthlyLabel.classList.add('active');
+                yearlyLabel.classList.remove('active');
+            }
+        }
+
+        // FAQ Accordion Toggle
+        function toggleFaq(button) {
+            const currentItem = button.parentElement;
+            const isActive = currentItem.classList.contains('active');
+
+            // Close all items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Open clicked item if it was closed
+            if (!isActive) {
+                currentItem.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
